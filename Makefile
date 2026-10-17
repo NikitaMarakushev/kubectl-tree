@@ -17,3 +17,32 @@ build:
 clean:
 	@echo "Running tests..."
 	$(GOTEST) -v -race -cover ./..
+
+deps:
+	@echo "Download dependencies..."
+	$(GOMOD) download
+	$(GOMOD) tidy
+
+fmt:
+	@echo "Formatting code..."
+	$(GOMOD) fmt ./...
+
+lint:
+	@echo "Running linter..."
+	@command -v golangci-lint >/dev/null 2>&1 || { \
+		echo "Installing golangci-lint..."; \
+		go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest; \
+	}
+	golangci-lint run
+
+install: build
+	@echo "Installing $(BINARY_NAME) to $(INSTALL_DIR)..."
+	sudo mv $(BINARY_NAME) $(INSTALL_DIR)/
+	@echo "Installed! You can now run: kubectl tree <deployment>"
+
+help:
+	@echo "Avaliable targets:"
+	@echo ""
+	@grep -E '^## ' $(MAKEFILE_LIST) | sed -e 's/^## //' | column -t -s ':'
+
+.DEFAULT_GOAL := help
