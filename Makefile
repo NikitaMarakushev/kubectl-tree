@@ -25,7 +25,7 @@ deps:
 
 fmt:
 	@echo "Formatting code..."
-	$(GOMOD) fmt ./...
+	$(GOCMD) fmt ./...
 
 lint:
 	@echo "Running linter..."
