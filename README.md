@@ -26,3 +26,9 @@ cd kubectl-tree
 
 # Verify installation
 `kubectl plugin list`
+
+# Run all tests
+`make test`
+
+# Run tests with coverage
+`go test -v -cover ./...`
