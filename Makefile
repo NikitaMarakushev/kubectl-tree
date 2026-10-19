@@ -49,4 +49,12 @@ test:
 	@echo "Running tests..."
 	$(GOTEST) -v -race -cover ./...
 
+build-all:
+	@echo "Building for multiple platforms..."
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)-linux-amd64 -v
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)-darwin-amd64 -v
+	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 $(GOBUILD) -o $(BINARY_NAME)-darwin-arm64 -v
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)-windows-amd64.exe -v
+	@echo "Binaries created in current directory"
+
 .DEFAULT_GOAL := help
