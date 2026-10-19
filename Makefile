@@ -45,4 +45,8 @@ help:
 	@echo ""
 	@grep -E '^## ' $(MAKEFILE_LIST) | sed -e 's/^## //' | column -t -s ':'
 
+test:
+	@echo "Running tests..."
+	$(GOTEST) -v -race -cover ./...
+
 .DEFAULT_GOAL := help

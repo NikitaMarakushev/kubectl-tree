@@ -69,19 +69,32 @@ func runTree(cmd *cobra.Command, args []string) error {
 
 	ctx := context.Background()
 
+	tree := buildTree(ctx, clientset, namespace, resourceName)
+
+	fmt.Printf("Resource tree in namespace %q\n\n", namespace)
+	if tree != nil {
+		printTree(tree, "", true)
+	} else {
+		fmt.Println("No resources found")
+	}
+
+	return nil
+}
+
+func buildTree(ctx context.Context, clientset kubernetes.Interface, namespace, deploymentName string) *Node {
 	deployments, err := clientset.AppsV1().Deployments(namespace).List(ctx, metav1.ListOptions{})
 	if err != nil {
-		return fmt.Errorf("failed to list deployments: %w", err)
+		return nil
 	}
 
 	replicaSets, err := clientset.AppsV1().ReplicaSets(namespace).List(ctx, metav1.ListOptions{})
 	if err != nil {
-		return fmt.Errorf("failed to list replicasets: %w", err)
+		return nil
 	}
 
 	pods, err := clientset.CoreV1().Pods(namespace).List(ctx, metav1.ListOptions{})
 	if err != nil {
-		return fmt.Errorf("failed to list pods: %w", err)
+		return nil
 	}
 
 	allResources := make(map[string]*Node)
@@ -129,10 +142,8 @@ func runTree(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	fmt.Printf("🌳 Resource tree in namespace %q\n\n", namespace)
-
 	for _, dep := range deployments.Items {
-		if resourceName != "" && dep.Name != resourceName {
+		if deploymentName != "" && dep.Name != deploymentName {
 			continue
 		}
 
@@ -151,8 +162,7 @@ func runTree(cmd *cobra.Command, args []string) error {
 			}
 		}
 
-		printTree(rootNode, "", true)
-		fmt.Println()
+		return rootNode
 	}
 
 	return nil
