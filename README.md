@@ -21,7 +21,13 @@ It helps DevOps engineers and SREs visualize the relationships between Deploymen
 `git clone https://github.com/nmarakushev/kubectl-tree.git`
 cd kubectl-tree
 
-# Build and install to /usr/local/bin
+# Build
+`make build`
+
+# Build multiplatform
+`make build-all`
+
+# Install to /usr/local/bin
 `make install`
 
 # Verify installation

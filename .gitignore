@@ -5,6 +5,7 @@
 *.so
 *.dylib
 kubectl-tree
+kubectl-tree-*
 
 # Dependency directories
 vendor/
