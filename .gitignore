@@ -4,6 +4,9 @@
 *.dll
 *.so
 *.dylib
+dist/
+
+# Local compiled binaries
 kubectl-tree
 kubectl-tree-*
 

@@ -58,3 +58,14 @@ build-all:
 	@echo "Binaries created in current directory"
 
 .DEFAULT_GOAL := help
+
+# Release targets
+.PHONY: snapshot release
+
+snapshot:
+	@echo "Building a local snapshot release..."
+	goreleaser release --snapshot --clean
+
+release:
+	@echo "Creating a release (requires git tag)..."
+	goreleaser release --clean
