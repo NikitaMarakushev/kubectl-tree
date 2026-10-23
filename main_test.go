@@ -76,11 +76,17 @@ func TestBuildTree(t *testing.T) {
 	clientset := fake.NewSimpleClientset(objects...)
 
 	ctx := context.Background()
-	tree := buildTree(ctx, clientset, "default", "nginx")
 
-	if tree == nil {
-		t.Fatal("Expected tree to be built, got nil")
+	trees, err := buildTree(ctx, clientset, "default", "deployment", "nginx")
+	if err != nil {
+		t.Fatalf("Expected no error, got %v", err)
 	}
+
+	if len(trees) == 0 {
+		t.Fatal("Expected at least one tree to be built, got empty slice")
+	}
+
+	tree := trees[0]
 
 	if tree.Kind != "Deployment" {
 		t.Errorf("Expected root Kind to be Deployment, got %s", tree.Kind)
@@ -108,8 +114,34 @@ func TestBuildTree(t *testing.T) {
 		t.Errorf("Expected grandchild Kind to be Pod, got %s", pod.Kind)
 	}
 
-	if !strings.Contains(pod.Status, "Running") {
-		t.Errorf("Expected Pod status to contain 'Running', got %s", pod.Status)
+	if !strings.Contains(pod.Status, "Ready") {
+		t.Errorf("Expected Pod status to contain 'Ready', got %s", pod.Status)
+	}
+}
+
+func TestBuildTreeMultipleRoots(t *testing.T) {
+	dep1 := &appsv1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{Name: "dep1", Namespace: "default", UID: "uid1"},
+		Spec:       appsv1.DeploymentSpec{Replicas: int32Ptr(1)},
+		Status:     appsv1.DeploymentStatus{ReadyReplicas: 1},
+	}
+	dep2 := &appsv1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{Name: "dep2", Namespace: "default", UID: "uid2"},
+		Spec:       appsv1.DeploymentSpec{Replicas: int32Ptr(1)},
+		Status:     appsv1.DeploymentStatus{ReadyReplicas: 0},
+	}
+
+	objects := []runtime.Object{dep1, dep2}
+	clientset := fake.NewSimpleClientset(objects...)
+
+	ctx := context.Background()
+	trees, err := buildTree(ctx, clientset, "default", "deployment", "")
+	if err != nil {
+		t.Fatalf("Expected no error, got %v", err)
+	}
+
+	if len(trees) != 2 {
+		t.Fatalf("Expected 2 trees to be returned, got %d", len(trees))
 	}
 }
 
@@ -121,12 +153,12 @@ func TestPrintTree(t *testing.T) {
 	tree := &Node{
 		Kind:   "Deployment",
 		Name:   "nginx",
-		Status: "3/3",
+		Status: "3/3 Ready",
 		Children: []*Node{
 			{
 				Kind:   "ReplicaSet",
 				Name:   "nginx-abc",
-				Status: "3/3",
+				Status: "3/3 Ready",
 				Children: []*Node{
 					{
 						Kind:   "Pod",
