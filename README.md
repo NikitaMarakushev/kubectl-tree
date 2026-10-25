@@ -20,8 +20,10 @@ It helps DevOps engineers and SREs visualize the relationships between Deploymen
 ### Option 2: Build from source
 # Clone the repository
 `git clone https://github.com/nmarakushev/kubectl-tree.git`
-cd kubectl-tree
+`cd kubectl-tree`
+`make install`
 
+### Other commands:
 # Build
 `make build`
 
