@@ -1,0 +1,87 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: owntree
+spec:
+  version: "v0.1.0"
+  shortDescription: Visualize Kubernetes resource ownership hierarchy
+  description: |
+    A kubectl plugin that displays the resource tree (ownership hierarchy) 
+    for Kubernetes objects. It helps DevOps engineers and SREs visualize 
+    the relationships between Deployments, StatefulSets, Jobs, ReplicaSets, and Pods.
+  homepage: https://github.com/nmarakushev/kubectl-tree
+  platforms:
+    - selector:
+        matchLabels:
+          os: linux
+          arch: amd64
+      uri: https://github.com/nmarakushev/kubectl-tree/releases/download/v0.1.0/kubectl-tree_Linux_x86_64.tar.gz
+      sha256: "82f8d51f559cca99d7e5617e4cfb25f593afe45462ad3beb9e1d27586b727b59"
+      bin: kubectl-owntree
+      files:
+        - from: "kubectl-owntree"
+          to: "."
+        - from: "LICENSE"
+          to: "."
+        - from: "README.md"
+          to: "."
+
+    - selector:
+        matchLabels:
+          os: linux
+          arch: arm64
+      uri: https://github.com/nmarakushev/kubectl-tree/releases/download/v0.1.0/kubectl-tree_Linux_arm64.tar.gz
+      sha256: "4bbf7e9af4473e567f278009e12a5dcc1f82971fda15c73402ce773e45adc48d"
+      bin: kubectl-owntree
+      files:
+        - from: "kubectl-owntree"
+          to: "."
+        - from: "LICENSE"
+          to: "."
+        - from: "README.md"
+          to: "."
+
+    - selector:
+        matchLabels:
+          os: darwin
+          arch: amd64
+      uri: https://github.com/nmarakushev/kubectl-tree/releases/download/v0.1.0/kubectl-tree_Darwin_x86_64.tar.gz
+      sha256: "e758bfc992256d60742b69147aa679bdc5ed6693af5df6bc2c33ed058ca44286"
+      bin: kubectl-owntree
+      files:
+        - from: "kubectl-owntree"
+          to: "."
+        - from: "LICENSE"
+          to: "."
+        - from: "README.md"
+          to: "."
+
+    - selector:
+        matchLabels:
+          os: darwin
+          arch: arm64
+      uri: https://github.com/nmarakushev/kubectl-tree/releases/download/v0.1.0/kubectl-tree_Darwin_arm64.tar.gz
+      sha256: "3b5f3f5862b962a2e8d5b7fa5ea05cc09c0fb549e747ae613cba63b853fa7f07"
+      bin: kubectl-owntree
+      files:
+        - from: "kubectl-owntree"
+          to: "."
+        - from: "LICENSE"
+          to: "."
+        - from: "README.md"
+          to: "."
+
+    - selector:
+        matchLabels:
+          os: windows
+          arch: amd64
+      uri: https://github.com/nmarakushev/kubectl-tree/releases/download/v0.1.0/kubectl-tree_Windows_x86_64.tar.gz
+      sha256: "3c0a5e52c71d862df162c9ea31abf36c4b72736cad2744e66c20c29aa7983364"
+      bin: kubectl-owntree.exe
+      files:
+        - from: "kubectl-owntree.exe"
+          to: "."
+        - from: "LICENSE"
+          to: "."
+        - from: "README.md"
+          to: "."
