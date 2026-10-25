@@ -14,9 +14,10 @@ It helps DevOps engineers and SREs visualize the relationships between Deploymen
 
 ## Installation
 
-### Option 1: Build from source (Recommended)
+### Option1: Via Krew (Recommended)
+`kubectl krew install owntree`
 
-
+### Option 2: Build from source
 # Clone the repository
 `git clone https://github.com/nmarakushev/kubectl-tree.git`
 cd kubectl-tree
