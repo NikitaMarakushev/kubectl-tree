@@ -39,3 +39,6 @@ cd kubectl-tree
 
 # Run tests with coverage
 `go test -v -cover ./...`
+
+
+![alt text](image.png)
